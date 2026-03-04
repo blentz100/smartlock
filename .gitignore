@@ -35,3 +35,6 @@ smartlock-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Ignore Intellij user directory
+.idea
+
