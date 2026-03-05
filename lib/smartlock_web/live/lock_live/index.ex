@@ -68,16 +68,16 @@ defmodule SmartlockWeb.LockLive.Index do
   end
   def handle_event("lock", %{"id" => id}, socket) do
     lock = Smartlock.Locks.get_lock!(id)
-    {:ok, _} = Smartlock.Locks.lock_lock(lock)
+    {:ok, updated_lock} = Smartlock.Locks.lock_lock(lock)
 
-    {:noreply, assign(socket, :locks, list_locks())}
+    {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
   def handle_event("unlock", %{"id" => id}, socket) do
     lock = Smartlock.Locks.get_lock!(id)
-    {:ok, _} = Smartlock.Locks.unlock_lock(lock)
+    {:ok, updated_lock} = Smartlock.Locks.unlock_lock(lock)
 
-    {:noreply, assign(socket, :locks, list_locks())}
+    {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
   defp list_locks() do
