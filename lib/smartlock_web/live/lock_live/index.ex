@@ -28,7 +28,7 @@ defmodule SmartlockWeb.LockLive.Index do
           lock.status == "locked" && "bg-red-500",
           lock.status == "unlocked" && "bg-green-500"
           ]}>
-          <%= lock.status %>
+          <%= String.capitalize(lock.status) %>
           </span>
         </:col>
         <:action :let={{_id, lock}}>
