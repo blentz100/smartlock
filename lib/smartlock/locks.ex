@@ -3,6 +3,8 @@ defmodule Smartlock.Locks do
   The Locks context.
   """
 
+  alias SmartlockWeb.Endpoint
+
   import Ecto.Query, warn: false
   alias Smartlock.Repo
 
@@ -102,10 +104,18 @@ defmodule Smartlock.Locks do
     Lock.changeset(lock, attrs)
   end
   def lock_lock(%Lock{} = lock) do
-    update_lock(lock, %{status: "locked"})
+  {:ok, updated} = update_lock(lock, %{status: "locked"})
+
+  Endpoint.broadcast("locks", "updated", updated)
+
+  {:ok, updated}
   end
 
   def unlock_lock(%Lock{} = lock) do
-    update_lock(lock, %{status: "unlocked"})
+  {:ok, updated} = update_lock(lock, %{status: "unlocked"})
+
+  Endpoint.broadcast("locks", "updated", updated)
+
+  {:ok, updated}
   end
 end

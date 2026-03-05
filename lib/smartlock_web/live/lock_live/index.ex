@@ -55,10 +55,19 @@ defmodule SmartlockWeb.LockLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      SmartlockWeb.Endpoint.subscribe("locks")
+    end
+
     {:ok,
      socket
      |> assign(:page_title, "Listing Locks")
      |> stream(:locks, list_locks())}
+  end
+
+  @impl true
+  def handle_info(%{event: "updated", payload: lock}, socket) do
+    {:noreply, stream_insert(socket, :locks, lock)}
   end
 
   @impl true
