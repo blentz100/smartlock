@@ -28,14 +28,8 @@ defmodule SmartlockWeb.LockLive.Index do
     </:action>
 
     <:action :let={{_id, lock}}>
-    <.link phx-click="lock" phx-value-id={lock.id}>
-    Lock
-    </.link>
-    </:action>
-
-    <:action :let={{_id, lock}}>
-    <.link phx-click="unlock" phx-value-id={lock.id}>
-    Unlock
+    <.link phx-click="toggle" phx-value-id={lock.id}>
+      <%= if lock.status == "locked", do: "Unlock", else: "Lock" %>
     </.link>
     </:action>
         <:action :let={{id, lock}}>
@@ -66,16 +60,14 @@ defmodule SmartlockWeb.LockLive.Index do
 
     {:noreply, stream_delete(socket, :locks, lock)}
   end
-  def handle_event("lock", %{"id" => id}, socket) do
+  def handle_event("toggle", %{"id" => id}, socket) do
     lock = Smartlock.Locks.get_lock!(id)
-    {:ok, updated_lock} = Smartlock.Locks.lock_lock(lock)
 
-    {:noreply, stream_insert(socket, :locks, updated_lock)}
-  end
-
-  def handle_event("unlock", %{"id" => id}, socket) do
-    lock = Smartlock.Locks.get_lock!(id)
-    {:ok, updated_lock} = Smartlock.Locks.unlock_lock(lock)
+    {:ok, updated_lock} =
+      case lock.status do
+        "locked" -> Smartlock.Locks.unlock_lock(lock)
+        "unlocked" -> Smartlock.Locks.lock_lock(lock)
+      end
 
     {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
