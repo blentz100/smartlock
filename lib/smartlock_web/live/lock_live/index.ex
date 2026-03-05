@@ -1,7 +1,21 @@
 defmodule SmartlockWeb.LockLive.Index do
   use SmartlockWeb, :live_view
 
-  alias Smartlock.Locks
+   alias Smartlock.Locks
+
+  def handle_event("lock", %{"id" => id}, socket) do
+    lock = Smartlock.Locks.get_lock!(id)
+    {:ok, _} = Smartlock.Locks.lock_lock(lock)
+
+    {:noreply, assign(socket, :locks, list_locks())}
+  end
+
+  def handle_event("unlock", %{"id" => id}, socket) do
+    lock = Smartlock.Locks.get_lock!(id)
+    {:ok, _} = Smartlock.Locks.unlock_lock(lock)
+
+    {:noreply, assign(socket, :locks, list_locks())}
+  end
 
   @impl true
   def render(assigns) do
@@ -24,11 +38,20 @@ defmodule SmartlockWeb.LockLive.Index do
         <:col :let={{_id, lock}} label="Name">{lock.name}</:col>
         <:col :let={{_id, lock}} label="Status">{lock.status}</:col>
         <:action :let={{_id, lock}}>
-          <div class="sr-only">
-            <.link navigate={~p"/locks/#{lock}"}>Show</.link>
-          </div>
-          <.link navigate={~p"/locks/#{lock}/edit"}>Edit</.link>
-        </:action>
+    <.link navigate={~p"/locks/#{lock}/edit"}>Edit</.link>
+    </:action>
+
+    <:action :let={{_id, lock}}>
+    <.link phx-click="lock" phx-value-id={lock.id}>
+    Lock
+    </.link>
+    </:action>
+
+    <:action :let={{_id, lock}}>
+    <.link phx-click="unlock" phx-value-id={lock.id}>
+    Unlock
+    </.link>
+    </:action>
         <:action :let={{id, lock}}>
           <.link
             phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{id}")}

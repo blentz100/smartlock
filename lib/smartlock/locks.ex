@@ -101,4 +101,11 @@ defmodule Smartlock.Locks do
   def change_lock(%Lock{} = lock, attrs \\ %{}) do
     Lock.changeset(lock, attrs)
   end
+  def lock_lock(%Lock{} = lock) do
+    update_lock(lock, %{status: "locked"})
+  end
+
+  def unlock_lock(%Lock{} = lock) do
+    update_lock(lock, %{status: "unlocked"})
+  end
 end
