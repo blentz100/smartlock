@@ -32,11 +32,11 @@ defmodule SmartlockWeb.LockLive.Index do
           </span>
         </:col>
 
-      <:action :let={{_id, lock}}>
-        <div class="flex gap-2 justify-end w-40 whitespace-nowrap">
+      <:col :let={{_id, lock}} label="Action">
+         <div class="flex gap-2 justify-start w-40 whitespace-nowrap">
 
         <.link phx-click="toggle" phx-value-id={lock.id}>
-          <%= if lock.status == "locked", do: "Unlock", else: "Lock" %>
+          Toggle Lock
         </.link>
 
         <.link navigate={~p"/locks/#{lock}/edit"}>
@@ -51,8 +51,7 @@ defmodule SmartlockWeb.LockLive.Index do
         </.link>
 
         </div>
-        </:action>
-
+      </:col>
       </.table>
     </Layouts.app>
     """
