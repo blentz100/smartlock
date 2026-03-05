@@ -1,18 +1,27 @@
-# Smartlock
+## Development Setup
 
-To start your Phoenix server:
+The project uses Postgres 15 running locally in Docker.
 
-* Run `mix setup` to install and setup dependencies
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+First-time setup (create container):
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+```
+docker run --name smartlock-postgres \
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=postgres \
+-e POSTGRES_DB=smartlock_dev \
+-p 5432:5432 \
+-d postgres:15
+```
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+These credentials are for local development only.
 
-## Learn more
+Start Postgres:
 
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix
+```docker start smartlock-postgres```
+
+Start the Phoenix server:
+
+```mix phx.server```
+
+Visit:
+http://localhost:4000/locks
