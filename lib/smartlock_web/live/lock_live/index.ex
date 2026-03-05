@@ -22,7 +22,15 @@ defmodule SmartlockWeb.LockLive.Index do
         row_click={fn {_id, lock} -> JS.navigate(~p"/locks/#{lock}") end}
       >
         <:col :let={{_id, lock}} label="Name">{lock.name}</:col>
-        <:col :let={{_id, lock}} label="Status">{lock.status}</:col>
+        <:col :let={{_id, lock}} label="Status">
+          <span class={[
+          "px-2 py-1 rounded text-white text-sm",
+          lock.status == "locked" && "bg-red-500",
+          lock.status == "unlocked" && "bg-green-500"
+          ]}>
+          <%= lock.status %>
+          </span>
+        </:col>
         <:action :let={{_id, lock}}>
     <.link navigate={~p"/locks/#{lock}/edit"}>Edit</.link>
     </:action>
