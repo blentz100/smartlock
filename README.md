@@ -19,6 +19,12 @@ Start Postgres:
 
 ```docker start smartlock-postgres```
 
+Seed the database:
+
+```
+mix run priv/repo/seeds.exs
+```
+
 Start the Phoenix server:
 
 ```mix phx.server```

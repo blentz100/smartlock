@@ -9,3 +9,14 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+alias Smartlock.Locks
+
+Locks.create_lock(%{
+  name: "Front Door",
+  status: "locked"
+})
+
+Locks.create_lock(%{
+  name: "Back Door",
+  status: "unlocked"
+})
