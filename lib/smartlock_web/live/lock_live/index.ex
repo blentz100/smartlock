@@ -3,20 +3,6 @@ defmodule SmartlockWeb.LockLive.Index do
 
    alias Smartlock.Locks
 
-  def handle_event("lock", %{"id" => id}, socket) do
-    lock = Smartlock.Locks.get_lock!(id)
-    {:ok, _} = Smartlock.Locks.lock_lock(lock)
-
-    {:noreply, assign(socket, :locks, list_locks())}
-  end
-
-  def handle_event("unlock", %{"id" => id}, socket) do
-    lock = Smartlock.Locks.get_lock!(id)
-    {:ok, _} = Smartlock.Locks.unlock_lock(lock)
-
-    {:noreply, assign(socket, :locks, list_locks())}
-  end
-
   @impl true
   def render(assigns) do
     ~H"""
@@ -79,6 +65,19 @@ defmodule SmartlockWeb.LockLive.Index do
     {:ok, _} = Locks.delete_lock(lock)
 
     {:noreply, stream_delete(socket, :locks, lock)}
+  end
+  def handle_event("lock", %{"id" => id}, socket) do
+    lock = Smartlock.Locks.get_lock!(id)
+    {:ok, _} = Smartlock.Locks.lock_lock(lock)
+
+    {:noreply, assign(socket, :locks, list_locks())}
+  end
+
+  def handle_event("unlock", %{"id" => id}, socket) do
+    lock = Smartlock.Locks.get_lock!(id)
+    {:ok, _} = Smartlock.Locks.unlock_lock(lock)
+
+    {:noreply, assign(socket, :locks, list_locks())}
   end
 
   defp list_locks() do
