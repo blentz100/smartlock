@@ -4,7 +4,7 @@ defmodule Smartlock.IoT.LockSimulator do
   alias Smartlock.Locks
   alias SmartlockWeb.Endpoint
 
-  @interval 3_000 # 3 seconds for demo
+  @interval 10_000 # 10 seconds for demo
 
   # Public API
   def start_link(_opts) do
