@@ -35,20 +35,35 @@ defmodule SmartlockWeb.LockLive.Index do
       <:col :let={{_id, lock}} label="Action">
          <div class="flex gap-2 justify-start w-40 whitespace-nowrap">
 
-        <.link phx-click="toggle" phx-value-id={lock.id}>
-          Toggle Lock
-        </.link>
+          <.link
+            phx-click="toggle"
+            phx-value-id={lock.id}
+            title={if lock.status == "locked", do: "Unlock", else: "Lock"}
+            class="text-gray-600 hover:text-blue-600"
+          >
+            <.icon name={
+              if lock.status == "locked",
+              do: "hero-lock-closed",
+              else: "hero-lock-open"
+            } />
+          </.link>
 
-        <.link navigate={~p"/locks/#{lock}/edit"}>
-          Edit
-        </.link>
+          <.link
+            navigate={~p"/locks/#{lock}/edit"}
+            title="Edit"
+            class="text-gray-600 hover:text-blue-600"
+          >
+            <.icon name="hero-pencil-square" />
+          </.link>
 
-        <.link
-          phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{lock.id}")}
-          data-confirm="Are you sure?"
-        >
-          Delete
-        </.link>
+          <.link
+            phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{lock.id}")}
+            data-confirm="Are you sure?"
+            title="Delete"
+            class="text-gray-600 hover:text-red-600"
+          >
+            <.icon name="hero-trash" />
+          </.link>
 
         </div>
       </:col>
