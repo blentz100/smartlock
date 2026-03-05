@@ -24,10 +24,10 @@ defmodule SmartlockWeb.LockLive.Index do
         <:col :let={{_id, lock}} label="Name">{lock.name}</:col>
         <:col :let={{_id, lock}} label="Status">
           <span class={[
-          "px-2 py-1 rounded text-white text-sm",
-          lock.status == "locked" && "bg-red-500",
-          lock.status == "unlocked" && "bg-green-500"
-          ]}>
+            "inline-block w-28 text-center px-2 py-1 rounded text-white text-sm whitespace-nowrap",
+            lock.status == "locked" && "bg-red-500",
+            lock.status == "unlocked" && "bg-green-500"
+            ]}>
           <%= String.capitalize(lock.status) %>
           </span>
         </:col>
