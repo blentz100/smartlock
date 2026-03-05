@@ -15,7 +15,8 @@ defmodule Smartlock.Application do
       # Start a worker by calling: Smartlock.Worker.start_link(arg)
       # {Smartlock.Worker, arg},
       # Start to serve requests, typically the last entry
-      SmartlockWeb.Endpoint
+      SmartlockWeb.Endpoint,
+      Smartlock.IoT.LockSimulator
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
