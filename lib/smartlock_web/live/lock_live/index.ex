@@ -31,23 +31,28 @@ defmodule SmartlockWeb.LockLive.Index do
           <%= String.capitalize(lock.status) %>
           </span>
         </:col>
-        <:action :let={{_id, lock}}>
-    <.link navigate={~p"/locks/#{lock}/edit"}>Edit</.link>
-    </:action>
 
-    <:action :let={{_id, lock}}>
-    <.link phx-click="toggle" phx-value-id={lock.id}>
-      <%= if lock.status == "locked", do: "Unlock", else: "Lock" %>
-    </.link>
-    </:action>
-        <:action :let={{id, lock}}>
-          <.link
-            phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{id}")}
-            data-confirm="Are you sure?"
-          >
-            Delete
-          </.link>
+      <:action :let={{_id, lock}}>
+        <div class="flex gap-2 justify-end w-40 whitespace-nowrap">
+
+        <.link phx-click="toggle" phx-value-id={lock.id}>
+          <%= if lock.status == "locked", do: "Unlock", else: "Lock" %>
+        </.link>
+
+        <.link navigate={~p"/locks/#{lock}/edit"}>
+          Edit
+        </.link>
+
+        <.link
+          phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{lock.id}")}
+          data-confirm="Are you sure?"
+        >
+          Delete
+        </.link>
+
+        </div>
         </:action>
+
       </.table>
     </Layouts.app>
     """
