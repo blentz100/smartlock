@@ -118,4 +118,20 @@ defmodule Smartlock.Locks do
 
   {:ok, updated}
   end
+
+  def list_locks_paginated(page \\ 1, page_size \\ 10) do
+    offset = (page - 1) * page_size
+
+    Lock
+    |> limit(^page_size)
+    |> offset(^offset)
+    |> order_by([l], asc: l.id)
+    |> Repo.all()
+  end
+
+  def count_locks do
+    Lock |> Repo.aggregate(:count, :id)
+  end
 end
+
+

@@ -71,22 +71,84 @@ defmodule SmartlockWeb.LockLive.Index do
         </div>
       </:col>
       </.table>
+      <div class="flex justify-between mt-4">
+        <.button
+        phx-click="prev_page"
+        disabled={@page <= 1}
+        >
+        Previous
+        </.button>
+
+        <div class="text-sm text-gray-500">
+        Page <%= @page %> of <%= @total_pages %>
+        </div>
+
+        <.button
+        phx-click="next_page"
+        disabled={@page >= @total_pages}
+        >
+        Next
+        </.button>
+      </div>
     </Layouts.app>
     """
   end
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      SmartlockWeb.Endpoint.subscribe("locks")
-    end
+    page = 1
+    page_size = 10
 
-    {:ok,
-     socket
-     |> assign(:page_title, "Listing Locks")
-     |> stream(:locks, list_locks())}
+    socket =
+      socket
+      |> assign(:page, page)
+      |> assign(:page_size, page_size)
+      |> load_locks()
+    {:ok,socket}
   end
 
+  defp load_locks(socket) do
+    page = socket.assigns.page
+    page_size = socket.assigns.page_size
+
+    locks =
+      Smartlock.Locks.list_locks_paginated(page, page_size)
+
+    total = Smartlock.Locks.count_locks()
+
+    total_pages =
+      if total == 0 do
+        1
+      else
+        div(total + page_size - 1, page_size)
+      end
+
+    socket
+    |> assign(:total_pages, total_pages)
+    |> stream(:locks, locks, reset: true)
+  end
+
+  def handle_event("next_page", _, socket) do
+    if socket.assigns.page < socket.assigns.total_pages do
+      socket =
+        update(socket, :page, &(&1 + 1))
+        |> load_locks()
+
+      {:noreply, socket}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("prev_page", _, socket) do
+    socket =
+      update(socket, :page, fn page ->
+        if page > 1, do: page - 1, else: page
+      end)
+      |> load_locks()
+
+    {:noreply, socket}
+  end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
@@ -126,9 +188,5 @@ defmodule SmartlockWeb.LockLive.Index do
   @impl true
   def handle_info(%{event: "updated", payload: lock}, socket) do
     {:noreply, stream_insert(socket, :locks, lock)}
-  end
-
-  defp list_locks() do
-    Locks.list_locks()
   end
 end
