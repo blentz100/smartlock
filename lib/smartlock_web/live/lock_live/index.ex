@@ -20,10 +20,9 @@ defmodule SmartlockWeb.LockLive.Index do
         id="locks"
         rows={@streams.locks}
         row_click={fn {_id, lock} -> JS.navigate(~p"/locks/#{lock}") end}
-        class="table-fixed w-full"
       >
         <:col :let={{_id, lock}} label="Name">{lock.name}</:col>
-        <:col :let={{_id, lock}} label="Status" class="w-40">
+        <:col :let={{_id, lock}} label="Status">
           <div class="flex justify-start">
           <span class={[
             "inline-flex w-28 justify-center px-2 py-1 rounded-full text-xs font-semibold",
@@ -88,10 +87,6 @@ defmodule SmartlockWeb.LockLive.Index do
      |> stream(:locks, list_locks())}
   end
 
-  @impl true
-  def handle_info(%{event: "updated", payload: lock}, socket) do
-    {:noreply, stream_insert(socket, :locks, lock)}
-  end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
@@ -126,6 +121,11 @@ defmodule SmartlockWeb.LockLive.Index do
     {:ok, updated_lock} =
       Locks.update_lock(lock, %{status: new_status})
     {:noreply, stream_insert(socket, :locks, updated_lock)}
+  end
+
+  @impl true
+  def handle_info(%{event: "updated", payload: lock}, socket) do
+    {:noreply, stream_insert(socket, :locks, lock)}
   end
 
   defp list_locks() do
