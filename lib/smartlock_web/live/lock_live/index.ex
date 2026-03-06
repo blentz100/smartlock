@@ -19,9 +19,12 @@ defmodule SmartlockWeb.LockLive.Index do
       <.table
         id="locks"
         rows={@streams.locks}
-        row_click={fn {_id, lock} -> JS.navigate(~p"/locks/#{lock}") end}
       >
-        <:col :let={{_id, lock}} label="Name">{lock.name}</:col>
+        <:col :let={{_id, lock}} label="Name">
+          <.link navigate={~p"/locks/#{lock}"} class="text-blue-600 hover:underline">
+            {lock.name}
+          </.link>
+        </:col>
         <:col :let={{_id, lock}} label="Status">
           <div class="flex justify-start">
           <span class={[
