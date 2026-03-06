@@ -25,7 +25,10 @@ defmodule Smartlock.IoT.LockSimulator do
   end
 
   defp schedule_tick do
-    Process.send_after(self(), :tick, @interval)
+    jitter = Enum.random(-2000..2000)
+    delay = max(5000, @interval + jitter)
+
+    Process.send_after(self(), :tick, delay)
   end
 
   defp simulate_event do
@@ -33,7 +36,24 @@ defmodule Smartlock.IoT.LockSimulator do
 
     Enum.each(locks, fn lock ->
       maybe_toggle(lock)
+      update_heartbeat(lock)
     end)
+  end
+
+  defp update_heartbeat(lock) do
+    # Simulate natural device reporting drift
+    offset_seconds = Enum.random(0..30)
+
+    timestamp =
+      DateTime.utc_now()
+      |> DateTime.add(-offset_seconds, :second)
+
+    {:ok, updated} =
+      Locks.update_lock(lock, %{
+        last_seen_at: timestamp
+      })
+
+    Endpoint.broadcast("locks", "updated", updated)
   end
 
   defp maybe_toggle(lock) do

@@ -34,6 +34,28 @@ defmodule SmartlockWeb.LockLive.Index do
           </span>
           </div>
         </:col>
+        <:col :let={{_id, lock}} label="Connection">
+          <% online =
+          case lock.last_seen_at do
+            nil -> false
+            ts -> DateTime.diff(DateTime.utc_now(), ts) < 30
+          end
+          %>
+          <span class={[
+          "px-2 py-1 rounded-full text-xs font-semibold",
+          online && "bg-green-100 text-green-700",
+          !online && "bg-gray-100 text-gray-600"
+          ]}>
+          <%= if online, do: "Online", else: "Offline" %>
+          </span>
+        </:col>
+        <:col :let={{_id, lock}} label="Last Heartbeat">
+          <%= if lock.last_seen_at do %>
+          <%= Calendar.strftime(lock.last_seen_at, "%Y-%m-%d %H:%M:%S") %>
+          <% else %>
+          —
+          <% end %>
+        </:col>
 
       <:col :let={{_id, lock}} label="Action">
          <div class="flex gap-2 justify-start whitespace-nowrap">
@@ -98,6 +120,10 @@ defmodule SmartlockWeb.LockLive.Index do
   def mount(_params, _session, socket) do
     page = 1
     page_size = 10
+
+    if connected?(socket) do
+      SmartlockWeb.Endpoint.subscribe("locks")
+    end
 
     socket =
       socket
@@ -186,7 +212,7 @@ defmodule SmartlockWeb.LockLive.Index do
   end
 
   @impl true
-  def handle_info(%{event: "updated", payload: lock}, socket) do
-    {:noreply, stream_insert(socket, :locks, lock)}
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks"}, socket) do
+    {:noreply, load_locks(socket)}
   end
 end
