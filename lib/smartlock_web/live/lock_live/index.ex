@@ -189,6 +189,13 @@ defmodule SmartlockWeb.LockLive.Index do
   def handle_event("toggle", %{"id" => id}, socket) do
     lock = Smartlock.Locks.get_lock!(id)
 
+    target_status =
+      case lock.status do
+        "locked" -> "unlocked"
+        "unlocked" -> "locked"
+        _ -> lock.status
+      end
+
     # Immediately mark as processing and record user command time
     {:ok, updated_lock} =
       Locks.update_lock(lock, %{
@@ -196,25 +203,23 @@ defmodule SmartlockWeb.LockLive.Index do
         last_command_at: DateTime.utc_now()
       })
 
-    # Simulate device delay
     delay = Enum.random(300..1500)
-    Process.send_after(self(), {:complete_toggle, lock.id}, delay)
+
+    Process.send_after(
+      self(),
+      {:complete_toggle, lock.id, target_status},
+      delay
+    )
 
     {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
-  def handle_info({:complete_toggle, id}, socket) do
+  def handle_info({:complete_toggle, id, target_status}, socket) do
     lock = Locks.get_lock!(id)
 
-    new_status =
-      case lock.status do
-          "processing" ->
-            if :rand.uniform() > 0.5, do: "locked", else: "unlocked"
-          other ->
-            other
-      end
     {:ok, updated_lock} =
-      Locks.update_lock(lock, %{status: new_status})
+      Locks.update_lock(lock, %{status: target_status})
+
     {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
