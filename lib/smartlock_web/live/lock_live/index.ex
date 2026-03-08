@@ -189,9 +189,13 @@ defmodule SmartlockWeb.LockLive.Index do
   def handle_event("toggle", %{"id" => id}, socket) do
     lock = Smartlock.Locks.get_lock!(id)
 
-    # Immediately mark as processing
+    # Immediately mark as processing and record user command time
     {:ok, updated_lock} =
-      Locks.update_lock(lock, %{status: "processing"})
+      Locks.update_lock(lock, %{
+        status: "processing",
+        last_command_at: DateTime.utc_now()
+      })
+
     # Simulate device delay
     delay = Enum.random(300..1500)
     Process.send_after(self(), {:complete_toggle, lock.id}, delay)

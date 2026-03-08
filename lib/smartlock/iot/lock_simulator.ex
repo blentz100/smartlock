@@ -57,8 +57,13 @@ defmodule Smartlock.IoT.LockSimulator do
   end
 
   defp maybe_toggle(lock) do
+    recently_commanded? =
+      case lock.last_command_at do
+        nil -> false
+        ts -> DateTime.diff(DateTime.utc_now(), ts) < 15
+      end
     # 30% chance of state change
-    if :rand.uniform() < 0.3 do
+    if !recently_commanded? and :rand.uniform() < 0.3 do
       new_status =
         case lock.status do
           "locked" -> "unlocked"
