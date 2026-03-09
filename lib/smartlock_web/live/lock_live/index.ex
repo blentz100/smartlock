@@ -29,7 +29,7 @@ defmodule SmartlockWeb.LockLive.Index do
         <:col :let={{_id, lock}} label="Status">
           <div class="flex justify-start">
           <span class={[
-            "inline-flex w-28 justify-center px-2 py-1 rounded-full text-xs font-semibold",
+            "inline-flex justify-center px-2 py-1 rounded-full text-xs font-semibold",
             lock.status == "locked" && "bg-red-100 text-red-700",
             lock.status == "unlocked" && "bg-green-100 text-green-700",
             lock.status == "processing" && "bg-yellow-100 text-yellow-700"
@@ -42,9 +42,9 @@ defmodule SmartlockWeb.LockLive.Index do
           <div class="flex items-center gap-1">
           <.icon
             name={battery_icon(lock.battery_level)}
-            class="text-gray-600"
+            class={battery_color(lock.battery_level)}
           />
-          <span><%= lock.battery_level %>%</span>
+          <span class="text-gray-700"><%= lock.battery_level %>%</span>
           </div>
         </:col>
         <:col :let={{_id, lock}} label="Connection">
@@ -260,7 +260,9 @@ defmodule SmartlockWeb.LockLive.Index do
   defp battery_icon(level) when level >= 80, do: "hero-battery-100"
   defp battery_icon(level) when level >= 30, do: "hero-battery-50"
   defp battery_icon(level) when level >= 1, do: "hero-battery-0"
-  defp battery_icon(_), do: "hero-battery-empty"
+
+  defp battery_color(level) when level >= 15, do: "text-green-600"
+  defp battery_color(_), do: "text-red-600"
 
   defp relative_time(nil), do: "—"
 
