@@ -38,18 +38,18 @@ defmodule SmartlockWeb.LockLive.Index do
           </div>
         </:col>
         <:col :let={{_id, lock}} label="Connection">
-          <% online =
-          case lock.last_seen_at do
-            nil -> false
-            ts -> DateTime.diff(DateTime.utc_now(), ts) < 30
-          end
-          %>
+          <% state = connection_state(lock) %>
           <span class={[
-          "px-2 py-1 rounded-full text-xs font-semibold",
-          online && "bg-green-100 text-green-700",
-          !online && "bg-gray-100 text-gray-600"
+          "px-2 py-1 rounded-full text-xs font-semibold transition-colors duration-700",
+          state == :online && "bg-green-100 text-green-700",
+          state == :stale && "bg-yellow-100 text-yellow-700",
+          state == :offline && "bg-gray-100 text-gray-600"
           ]}>
-          <%= if online, do: "Online", else: "Offline" %>
+          <%= case state do
+            :online -> "Online"
+            :stale -> "Stale"
+            :offline -> "Offline"
+          end %>
           </span>
         </:col>
         <:col :let={{_id, lock}} label="Last Heartbeat">
@@ -62,19 +62,27 @@ defmodule SmartlockWeb.LockLive.Index do
 
       <:col :let={{_id, lock}} label="Action">
          <div class="flex gap-2 justify-start whitespace-nowrap">
+          <% state = connection_state(lock) %>
 
-          <.link
-            phx-click="toggle"
-            phx-value-id={lock.id}
-            title={if lock.status == "locked", do: "Unlock", else: "Lock"}
-            class="text-gray-600 hover:text-blue-600"
-          >
+          <%= if state == :online do %>
+            <.link phx-click="toggle"
+                phx-value-id={lock.id}
+                title={if lock.status == "locked", do: "Unlock", else: "Lock"}>
             <.icon name={
               if lock.status == "locked",
               do: "hero-lock-closed",
               else: "hero-lock-open"
             } />
-          </.link>
+            </.link>
+          <% else %>
+            <span class="opacity-40 cursor-not-allowed" title="Device not reachable">
+            <.icon name={
+              if lock.status == "locked",
+              do: "hero-lock-closed",
+              else: "hero-lock-open"
+            } />
+            </span>
+          <% end %>
 
           <.link
             navigate={~p"/locks/#{lock}/edit"}
@@ -92,7 +100,6 @@ defmodule SmartlockWeb.LockLive.Index do
           >
             <.icon name="hero-trash" />
           </.link>
-
         </div>
       </:col>
       </.table>
@@ -221,6 +228,22 @@ defmodule SmartlockWeb.LockLive.Index do
       Locks.update_lock(lock, %{status: target_status})
 
     {:noreply, stream_insert(socket, :locks, updated_lock)}
+  end
+
+  defp connection_state(lock) do
+    case lock.last_seen_at do
+      nil ->
+        :offline
+
+      ts ->
+        age = DateTime.diff(DateTime.utc_now(), ts)
+
+        cond do
+          age < 30 -> :online
+          age < 60 -> :stale
+          true -> :offline
+        end
+    end
   end
 
   @impl true
