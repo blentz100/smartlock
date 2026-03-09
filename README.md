@@ -19,6 +19,18 @@ Start Postgres:
 
 ```docker start smartlock-postgres```
 
+Create the database:
+
+```
+mix ecto.create 
+```
+
+Run the migrations:
+
+```
+mix ecto.migrate
+```
+
 Seed the database:
 
 ```

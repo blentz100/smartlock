@@ -11,8 +11,6 @@
 # and so on) as they will fail if something goes wrong.
 alias Smartlock.Locks
 
-alias Smartlock.Locks
-
 # Clear existing locks (optional but helpful for demo consistency)
 Smartlock.Repo.delete_all(Smartlock.Locks.Lock)
 
@@ -45,6 +43,7 @@ Enum.each(1..100, fn i ->
 
   Locks.create_lock(%{
     name: name,
-    status: Enum.random(statuses)
+    status: Enum.random(statuses),
+    battery_level: Enum.random(10..100)  # battery level between 10% and 100%
   })
 end)

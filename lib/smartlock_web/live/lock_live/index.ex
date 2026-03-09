@@ -1,7 +1,7 @@
 defmodule SmartlockWeb.LockLive.Index do
   use SmartlockWeb, :live_view
-
-   alias Smartlock.Locks
+  import SmartlockWeb.CoreComponents
+  alias Smartlock.Locks
 
   @impl true
   def render(assigns) do
@@ -36,6 +36,15 @@ defmodule SmartlockWeb.LockLive.Index do
           ]}>
             <%= String.capitalize(lock.status) %>
           </span>
+          </div>
+        </:col>
+        <:col :let={{_id, lock}} label="Battery" class="w-32">
+          <div class="flex items-center gap-1">
+          <.icon
+            name={battery_icon(lock.battery_level)}
+            class="text-gray-600"
+          />
+          <span><%= lock.battery_level %>%</span>
           </div>
         </:col>
         <:col :let={{_id, lock}} label="Connection">
@@ -247,6 +256,11 @@ defmodule SmartlockWeb.LockLive.Index do
         end
     end
   end
+
+  defp battery_icon(level) when level >= 80, do: "hero-battery-100"
+  defp battery_icon(level) when level >= 30, do: "hero-battery-50"
+  defp battery_icon(level) when level >= 1, do: "hero-battery-0"
+  defp battery_icon(_), do: "hero-battery-empty"
 
   defp relative_time(nil), do: "—"
 
