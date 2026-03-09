@@ -9,11 +9,6 @@ defmodule SmartlockWeb.LockLive.Index do
     <Layouts.app flash={@flash}>
       <.header>
         Access
-        <:actions>
-          <.button variant="primary" navigate={~p"/locks/new"}>
-            <.icon name="hero-plus" /> New Lock
-          </.button>
-        </:actions>
       </.header>
 
       <.table
