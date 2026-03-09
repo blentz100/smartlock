@@ -22,7 +22,7 @@ defmodule SmartlockWeb.LockLive.Index do
         class="table-fixed w-full"
       >
         <:col :let={{_id, lock}} label="Name" class="w-1/4">
-          <.link navigate={~p"/locks/#{lock}"} class="text-blue-600 hover:underline">
+          <.link navigate={~p"/locks/#{lock}"} class="hover:underline">
             {lock.name}
           </.link>
         </:col>
