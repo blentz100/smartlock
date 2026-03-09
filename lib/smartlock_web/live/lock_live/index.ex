@@ -240,7 +240,7 @@ defmodule SmartlockWeb.LockLive.Index do
 
         cond do
           age < 30 -> :online
-          age < 60 -> :stale
+          age < 60-> :stale
           true -> :offline
         end
     end

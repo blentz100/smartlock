@@ -36,7 +36,13 @@ defmodule Smartlock.IoT.LockSimulator do
 
     Enum.each(locks, fn lock ->
       maybe_toggle(lock)
-      update_heartbeat(lock)
+      # 80% chance to send heartbeat
+      if :rand.uniform() < 0.8 do
+        update_heartbeat(lock)
+      else
+        # simulate missed heartbeat
+        IO.puts("Skipping heartbeat for #{lock.id}")
+      end
     end)
   end
 
@@ -62,8 +68,8 @@ defmodule Smartlock.IoT.LockSimulator do
         nil -> false
         ts -> DateTime.diff(DateTime.utc_now(), ts) < 15
       end
-    # 30% chance of state change
-    if !recently_commanded? and :rand.uniform() < 0.3 do
+    # 10% chance of lock state change
+    if !recently_commanded? and :rand.uniform() < 0.1 do
       new_status =
         case lock.status do
           "locked" -> "unlocked"
