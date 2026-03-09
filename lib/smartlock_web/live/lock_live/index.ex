@@ -54,11 +54,7 @@ defmodule SmartlockWeb.LockLive.Index do
           </span>
         </:col>
         <:col :let={{_id, lock}} label="Last Heartbeat">
-          <%= if lock.last_seen_at do %>
-          <%= Calendar.strftime(lock.last_seen_at, "%Y-%m-%d %H:%M:%S") %>
-          <% else %>
-          —
-          <% end %>
+          <%= relative_time(lock.last_seen_at) %>
         </:col>
 
       <:col :let={{_id, lock}} label="Action">
@@ -252,5 +248,25 @@ defmodule SmartlockWeb.LockLive.Index do
     end
   end
 
+  defp relative_time(nil), do: "—"
 
+  defp relative_time(datetime) do
+    seconds = DateTime.diff(DateTime.utc_now(), datetime)
+
+    cond do
+      seconds < 5 ->
+        "just now"
+
+      seconds < 60 ->
+        "#{seconds}s ago"
+
+      seconds < 3600 ->
+        minutes = div(seconds, 60)
+        "#{minutes}m ago"
+
+      true ->
+        hours = div(seconds, 3600)
+        "#{hours}h ago"
+    end
+  end
 end
