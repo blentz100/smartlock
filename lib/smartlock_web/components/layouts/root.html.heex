@@ -31,15 +31,33 @@
     </script>
   </head>
   <body class="bg-gray-50">
+  <% current_path = @conn.request_path %>
 
-  <div class="flex h-screen">
-
-    <aside class="w-64 bg-white border-r flex flex-col">
-
-      <!-- App Name -->
-      <div class="px-6 py-4 text-xl font-semibold border-b">
-        RentalOS
+    <header class="bg-white shadow-sm px-6 py-3 flex items-center justify-between">
+      <!-- Left: App name -->
+      <div class="text-xl font-bold text-gray-800">
+        SmartRent Manager
       </div>
+
+      <!-- Right: User / notifications -->
+      <div class="flex items-center gap-4">
+        <!-- Notifications -->
+        <button class="relative p-2 rounded hover:bg-gray-100">
+          <.icon name="hero-bell" class="w-5 h-5 text-gray-600"/>
+          <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <!-- User -->
+        <div class="flex items-center gap-2">
+          <span class="text-gray-700 font-medium">Demo Manager</span>
+          <.icon name="hero-user-circle" class="w-6 h-6 text-gray-500"/>
+        </div>
+      </div>
+    </header>
+
+
+  <div class="flex flex-1 h-[calc(100vh-64px)]">
+    <aside class="w-45 bg-white border-r flex flex-col">
 
       <div class="flex-1 overflow-y-auto px-4 py-4 text-sm">
 
@@ -81,7 +99,14 @@
           </li>
 
           <li>
-            <.link navigate={~p"/"} class="flex items-center gap-2 text-blue-600 font-medium">
+            <.link
+              navigate={~p"/"}
+              class={[
+                "flex items-center gap-2",
+                current_path == "/" && "text-blue-600 font-medium",
+                current_path != "/" && "text-gray-400"
+              ]}
+            >
               <.icon name="hero-lock-closed" class="w-4 h-4"/>
               Access
             </.link>
