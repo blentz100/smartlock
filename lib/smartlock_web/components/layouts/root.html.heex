@@ -30,7 +30,134 @@
       })();
     </script>
   </head>
-  <body>
-    {@inner_content}
+  <body class="bg-gray-50">
+
+  <div class="flex h-screen">
+
+    <aside class="w-64 bg-white border-r flex flex-col">
+
+      <!-- App Name -->
+      <div class="px-6 py-4 text-xl font-semibold border-b">
+        RentalOS
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-4 py-4 text-sm">
+
+        <!-- Community -->
+        <div class="text-gray-400 uppercase text-xs mb-2">
+          Community
+        </div>
+
+        <div class="flex items-center gap-2 ml-2 mb-4 text-gray-800">
+          <.icon name="hero-building-office-2" class="w-4 h-4"/>
+          Garden View
+        </div>
+
+        <!-- Favorites -->
+        <div class="text-gray-400 uppercase text-xs mb-2">
+          Favorites
+        </div>
+
+        <div class="flex items-center gap-2 ml-2 mb-6 text-gray-400">
+          <.icon name="hero-star" class="w-4 h-4"/>
+          No Favorites Yet
+        </div>
+
+        <!-- Management -->
+        <div class="text-gray-400 uppercase text-xs mb-2">
+          Management
+        </div>
+
+        <ul class="space-y-2 mb-6 ml-2">
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-home" class="w-4 h-4"/>
+            Overview
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-building-office" class="w-4 h-4"/>
+            Units
+          </li>
+
+          <li>
+            <.link navigate={~p"/"} class="flex items-center gap-2 text-blue-600 font-medium">
+              <.icon name="hero-lock-closed" class="w-4 h-4"/>
+              Access
+            </.link>
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-clock" class="w-4 h-4"/>
+            Activity
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-document-text" class="w-4 h-4"/>
+            Leasing
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-user-group" class="w-4 h-4"/>
+            Guests
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-wrench-screwdriver" class="w-4 h-4"/>
+            Maintenance
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-map" class="w-4 h-4"/>
+            Tours
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-truck" class="w-4 h-4"/>
+            Parking
+          </li>
+
+        </ul>
+
+        <!-- Admin -->
+        <div class="text-gray-400 uppercase text-xs mb-2">
+          Admin
+        </div>
+
+        <ul class="space-y-2 ml-2">
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-users" class="w-4 h-4"/>
+            Users
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-chart-bar" class="w-4 h-4"/>
+            Reports
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-cog-6-tooth" class="w-4 h-4"/>
+            Settings
+          </li>
+
+          <li class="flex items-center gap-2 text-gray-400">
+            <.icon name="hero-question-mark-circle" class="w-4 h-4"/>
+            Help
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-8">
+      <%= @inner_content %>
+    </main>
+
+  </div>
+
   </body>
 </html>

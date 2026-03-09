@@ -11,7 +11,7 @@ defmodule SmartlockWeb.LockLive.Show do
         Lock {@lock.id}
         <:subtitle>This is a lock record from your database.</:subtitle>
         <:actions>
-          <.button navigate={~p"/locks"}>
+          <.button navigate={~p"/"}>
             <.icon name="hero-arrow-left" />
           </.button>
           <.button variant="primary" navigate={~p"/locks/#{@lock}/edit?return_to=show"}>
