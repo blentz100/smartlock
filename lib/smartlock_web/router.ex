@@ -16,6 +16,7 @@ defmodule SmartlockWeb.Router do
 
   scope "/", SmartlockWeb do
     pipe_through :browser
+    live "/", LockLive.Index, :index
     live "/locks", LockLive.Index, :index
     live "/locks/new", LockLive.Index, :new
     live "/locks/:id", LockLive.Show, :show
