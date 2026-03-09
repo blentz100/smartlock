@@ -14,9 +14,6 @@ defmodule SmartlockWeb.LockLive.Show do
           <.button navigate={~p"/"}>
             <.icon name="hero-arrow-left" />
           </.button>
-          <.button variant="primary" navigate={~p"/locks/#{@lock}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit lock
-          </.button>
         </:actions>
       </.header>
 
