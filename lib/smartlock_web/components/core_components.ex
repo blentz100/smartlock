@@ -342,6 +342,7 @@ defmodule SmartlockWeb.CoreComponents do
   attr :rows, :list, required: true
   attr :row_id, :any, default: nil, doc: "the function for generating the row id"
   attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
+  attr :class, :string, default: nil
 
   attr :row_item, :any,
     default: &Function.identity/1,
@@ -349,6 +350,7 @@ defmodule SmartlockWeb.CoreComponents do
 
   slot :col, required: true do
     attr :label, :string
+    attr :class, :string
   end
 
   slot :action, doc: "the slot for showing user actions in the last table column"
@@ -363,7 +365,9 @@ defmodule SmartlockWeb.CoreComponents do
     <table class="table table-zebra">
       <thead>
         <tr>
-          <th :for={col <- @col}>{col[:label]}</th>
+          <th :for={col <- @col} class={col[:class]}>
+            {col[:label]}
+          </th>
           <th :if={@action != []}>
             <span class="sr-only">{gettext("Actions")}</span>
           </th>

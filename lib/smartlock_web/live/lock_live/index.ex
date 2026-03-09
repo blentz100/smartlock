@@ -19,8 +19,9 @@ defmodule SmartlockWeb.LockLive.Index do
       <.table
         id="locks"
         rows={@streams.locks}
+        class="table-fixed w-full"
       >
-        <:col :let={{_id, lock}} label="Name">
+        <:col :let={{_id, lock}} label="Name" class="w-1/4">
           <.link navigate={~p"/locks/#{lock}"} class="text-blue-600 hover:underline">
             {lock.name}
           </.link>
@@ -230,6 +231,11 @@ defmodule SmartlockWeb.LockLive.Index do
     {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
+  @impl true
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks"}, socket) do
+    {:noreply, load_locks(socket)}
+  end
+
   defp connection_state(lock) do
     case lock.last_seen_at do
       nil ->
@@ -246,8 +252,5 @@ defmodule SmartlockWeb.LockLive.Index do
     end
   end
 
-  @impl true
-  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks"}, socket) do
-    {:noreply, load_locks(socket)}
-  end
+
 end
