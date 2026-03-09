@@ -26,7 +26,7 @@ defmodule SmartlockWeb.LockLive.Index do
             {lock.name}
           </.link>
         </:col>
-        <:col :let={{_id, lock}} label="Status">
+        <:col :let={{_id, lock}} label="Status" class="w-1/8">
           <div class="flex justify-start">
           <span class={[
             "inline-flex justify-center px-2 py-1 rounded-full text-xs font-semibold",

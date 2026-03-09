@@ -36,8 +36,8 @@ defmodule Smartlock.IoT.LockSimulator do
 
     Enum.each(locks, fn lock ->
       maybe_toggle(lock)
-      # 80% chance to send heartbeat
-      if :rand.uniform() < 0.8 do
+      # 50% chance to send heartbeat
+      if :rand.uniform() < 0.5 do
         update_heartbeat(lock)
       else
         # simulate missed heartbeat
