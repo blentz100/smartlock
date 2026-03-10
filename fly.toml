@@ -1,0 +1,7 @@
+app = "smartlock"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+PORT = "8080"
