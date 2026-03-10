@@ -12,7 +12,6 @@ config :smartlock, SmartlockWeb.Endpoint, cache_static_manifest: "priv/static/ca
 # Note `:force_ssl` is required to be set at compile-time.
 config :smartlock, SmartlockWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  url: System.fetch_env!("DATABASE_URL"),
   exclude: [
     # paths: ["/health"],
     hosts: ["localhost", "127.0.0.1"]
