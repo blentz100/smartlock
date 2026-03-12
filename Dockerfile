@@ -24,7 +24,10 @@ RUN mix deps.compile
 # Copy the rest of the app
 COPY . .
 
-# Build the release
+# Compile assets (esbuild + tailwind + sass handled by Mix)
+RUN MIX_ENV=prod mix assets.deploy
+
+# Build release
 RUN MIX_ENV=prod mix release
 
 # --- Runtime stage ---

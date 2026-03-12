@@ -29,5 +29,6 @@ if config_env() == :prod do
   # Configure Endpoint
   config :smartlock, SmartlockWeb.Endpoint,
          server: phx_server == "true",
-         secret_key_base: secret_key_base
+         secret_key_base: secret_key_base,
+         cache_static_manifest: "priv/static/cache_manifest.json"
 end
