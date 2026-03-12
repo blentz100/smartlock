@@ -1,51 +1,58 @@
-# syntax = docker/dockerfile:1
+# --- Builder stage ---
+FROM hexpm/elixir:1.20.0-rc.3-erlang-26.2.5.14-debian-bookworm-20260223 AS builder
 
-ARG ELIXIR_VERSION=1.15.7
-ARG OTP_VERSION=26.1
-ARG DEBIAN_VERSION=bullseye-20231009-slim
-
-#ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
-ARG BUILDER_IMAGE="hexpm/elixir:1.20.0-rc.3-erlang-26.2.5.14-debian-bookworm-20260223"
-ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
-
-# ---- Build Stage ----
-FROM ${BUILDER_IMAGE} AS builder
-
-RUN apt-get update -y && \
-    apt-get install -y build-essential git && \
-    rm -rf /var/lib/apt/lists/*
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    inotify-tools \
+    ca-certificates \
+    openssl \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-RUN mix local.hex --force && \
-    mix local.rebar --force
+# Install Hex + Rebar
+RUN mix local.hex --force && mix local.rebar --force
 
-ENV MIX_ENV=prod
-
+# Copy mix files and fetch deps
 COPY mix.exs mix.lock ./
+COPY config config
 RUN mix deps.get --only prod
 RUN mix deps.compile
 
-COPY config config
-COPY lib lib
-COPY priv priv
-COPY assets assets
+# Copy the rest of the app
+COPY . .
 
-RUN mix compile
-RUN mix release
+# Build the release
+RUN MIX_ENV=prod mix release
 
-# ---- Runtime Stage ----
-FROM ${RUNNER_IMAGE}
+# --- Runtime stage ---
+FROM debian:bookworm-slim AS runtime
 
-RUN apt-get update -y && \
-    apt-get install -y openssl libstdc++6 && \
-    rm -rf /var/lib/apt/lists/*
+# Install runtime deps (needed for SSL/certs)
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    openssl \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY priv/certs/prod-ca-2021.crt /etc/ssl/certs/prod-ca-2021.crt
 
 WORKDIR /app
 
-COPY --from=builder /app/_build/prod/rel/* ./
-
-CMD ["bin/server"]
-
+# Copy the built release
 COPY --from=builder /app/_build/prod/rel/smartlock ./
-CMD ["bin/smartlock", "start"]
+
+# Set environment defaults
+ENV HOME=/app
+ENV MIX_ENV=prod
+ENV REPLACE_OS_VARS=true
+ENV LANG=C.UTF-8
+ENV ELIXIR_ERL_OPTIONS="+fnu"
+
+# Expose Phoenix port
+EXPOSE 8080
+
+# Launch the app
+ENTRYPOINT ["bin/smartlock"]
+CMD ["start"]
