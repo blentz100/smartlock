@@ -40,8 +40,7 @@ defmodule Smartlock.IoT.LockSimulator do
       if :rand.uniform() < 0.5 do
         update_heartbeat(lock)
       else
-        # simulate missed heartbeat
-        IO.puts("Skipping heartbeat for #{lock.id}")
+        # do nothing / simulate missed heartbeat
       end
     end)
   end
