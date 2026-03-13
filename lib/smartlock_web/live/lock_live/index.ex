@@ -21,18 +21,6 @@ defmodule SmartlockWeb.LockLive.Index do
             {lock.name}
           </.link>
         </:col>
-        <:col :let={{_id, lock}} label="Status" class="w-1/8">
-          <div class="flex justify-start">
-          <span class={[
-            "inline-flex justify-center px-2 py-1 rounded-full text-xs font-semibold",
-            lock.status == "locked" && "bg-red-100 text-red-700",
-            lock.status == "unlocked" && "bg-green-100 text-green-700",
-            lock.status == "processing" && "bg-yellow-100 text-yellow-700"
-          ]}>
-            <%= String.capitalize(lock.status) %>
-          </span>
-          </div>
-        </:col>
         <:col :let={{_id, lock}} label="Battery" class="w-32">
           <div class="flex items-center gap-1">
           <.icon
@@ -42,7 +30,7 @@ defmodule SmartlockWeb.LockLive.Index do
           <span class="text-gray-700"><%= lock.battery_level %>%</span>
           </div>
         </:col>
-        <:col :let={{_id, lock}} label="Connection">
+        <:col :let={{_id, lock}} label="Connection" class="w-32">
           <% state = connection_state(lock) %>
           <span class={[
           "px-2 py-1 rounded-full text-xs font-semibold transition-colors duration-700",
@@ -57,10 +45,21 @@ defmodule SmartlockWeb.LockLive.Index do
           end %>
           </span>
         </:col>
-        <:col :let={{_id, lock}} label="Last Heartbeat">
+        <:col :let={{_id, lock}} label="Last Heartbeat" class="w-32">
           <%= relative_time(lock.last_seen_at) %>
         </:col>
-
+      <:col :let={{_id, lock}} label="Status" class="w-1/8">
+          <div class="flex justify-start">
+          <span class={[
+            "inline-flex justify-center px-2 py-1 rounded-full text-xs font-semibold",
+            lock.status == "locked" && "bg-red-100 text-red-700",
+            lock.status == "unlocked" && "bg-green-100 text-green-700",
+            lock.status == "processing" && "bg-yellow-100 text-yellow-700"
+          ]}>
+            <%= String.capitalize(lock.status) %>
+          </span>
+          </div>
+      </:col>
       <:col :let={{_id, lock}} label="Action">
          <div class="flex gap-2 justify-start whitespace-nowrap">
           <% state = connection_state(lock) %>
