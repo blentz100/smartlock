@@ -202,7 +202,8 @@ defmodule SmartlockWeb.LockLive.Index do
     {:ok, updated_lock} =
       Locks.update_lock(lock, %{
         status: "processing",
-        last_command_at: DateTime.utc_now()
+        last_command_at: DateTime.utc_now(),
+        last_seen_at: DateTime.utc_now()
       })
 
     delay = Enum.random(300..1500)
