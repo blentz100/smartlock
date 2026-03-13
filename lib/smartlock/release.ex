@@ -13,6 +13,21 @@ defmodule Smartlock.Release do
     end
   end
 
+  def seed do
+    start_repo()
+    run_seeds()
+  end
+
+  defp start_repo do
+    # Start the repo(s) manually
+    Application.ensure_all_started(@app)
+  end
+
+  defp run_seeds do
+    # This will actually run your priv/repo/seeds.exs
+    {:ok, _} = Code.eval_file(Path.join(:code.priv_dir(@app), "repo/seeds.exs"))
+  end
+
   def rollback(repo, version) do
     load_app()
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))

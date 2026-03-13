@@ -7,9 +7,9 @@ if config_env() == :prod do
   variable DATABASE_URL is missing."
 
   phx_server = System.get_env("PHX_SERVER") || "false"
-  secret_key_base = System.get_env("SECRET_KEY_BASE") || raise
-  "SECRET_KEY_BASE is missing!"
-
+  secret_key_base =
+    System.get_env("SECRET_KEY_BASE") ||
+      raise "SECRET_KEY_BASE is missing!"
   port = String.to_integer(System.get_env("PORT") || "8080")
   host = System.get_env("PHX_HOST") || "smartlock.fly.dev"
 
