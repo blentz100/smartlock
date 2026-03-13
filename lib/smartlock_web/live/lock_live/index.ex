@@ -14,14 +14,14 @@ defmodule SmartlockWeb.LockLive.Index do
       <.table
         id="locks"
         rows={@streams.locks}
-        class="table-fixed w-full"
+        class="table-fixed"
       >
-        <:col :let={{_id, lock}} label="Name" class="w-1/4">
+        <:col :let={{_id, lock}} label="Name" class="w-1/3">
           <.link navigate={~p"/locks/#{lock}"} class="hover:underline">
             {lock.name}
           </.link>
         </:col>
-        <:col :let={{_id, lock}} label="Battery" class="w-32">
+        <:col :let={{_id, lock}} label="Battery" class="w-1/6">
           <div class="flex items-center gap-1">
           <.icon
             name={battery_icon(lock.battery_level)}
@@ -30,7 +30,7 @@ defmodule SmartlockWeb.LockLive.Index do
           <span class="text-gray-700"><%= lock.battery_level %>%</span>
           </div>
         </:col>
-        <:col :let={{_id, lock}} label="Connection" class="w-32">
+        <:col :let={{_id, lock}} label="Connection" class="w-1/6">
           <% state = connection_state(lock) %>
           <span class={[
           "px-2 py-1 rounded-full text-xs font-semibold transition-colors duration-700",
@@ -45,7 +45,7 @@ defmodule SmartlockWeb.LockLive.Index do
           end %>
           </span>
         </:col>
-        <:col :let={{_id, lock}} label="Last Heartbeat" class="w-32">
+        <:col :let={{_id, lock}} label="Last Heartbeat" class="w-1/6">
           <%= relative_time(lock.last_seen_at) %>
         </:col>
       <:col :let={{_id, lock}} label="Status" class="w-1/8">
@@ -60,7 +60,7 @@ defmodule SmartlockWeb.LockLive.Index do
           </span>
           </div>
       </:col>
-      <:col :let={{_id, lock}} label="Action">
+      <:col :let={{_id, lock}} label="Action" class="w-1/6">
          <div class="flex gap-2 justify-start whitespace-nowrap">
           <% state = connection_state(lock) %>
 
