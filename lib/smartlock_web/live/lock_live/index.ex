@@ -148,20 +148,15 @@ defmodule SmartlockWeb.LockLive.Index do
     page = socket.assigns.page
     page_size = socket.assigns.page_size
 
-    locks =
-      Smartlock.Locks.list_locks_paginated(page, page_size)
-
+    locks = Smartlock.Locks.list_locks_paginated(page, page_size)
     total = Smartlock.Locks.count_locks()
 
     total_pages =
-      if total == 0 do
-        1
-      else
-        div(total + page_size - 1, page_size)
-      end
+      if total == 0, do: 1, else: div(total + page_size - 1, page_size)
 
     socket
     |> assign(:total_pages, total_pages)
+    |> assign(:visible_lock_ids, Enum.map(locks, & &1.id)) # <--- track IDs
     |> stream(:locks, locks, reset: true)
   end
 
@@ -232,8 +227,13 @@ defmodule SmartlockWeb.LockLive.Index do
   end
 
   @impl true
-  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks"}, socket) do
-    {:noreply, load_locks(socket)}
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks", event: "updated", payload: lock}, socket) do
+    # Only update locks on the current page
+    if lock.id in socket.assigns.visible_lock_ids do
+      {:noreply, stream_insert(socket, :locks, lock)}
+    else
+      {:noreply, socket}
+    end
   end
 
   defp connection_state(lock) do
