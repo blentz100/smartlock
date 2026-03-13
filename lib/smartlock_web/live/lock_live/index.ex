@@ -64,10 +64,10 @@ defmodule SmartlockWeb.LockLive.Index do
          <div class="flex gap-2 justify-start whitespace-nowrap">
           <% state = connection_state(lock) %>
 
-          <%= if state == :online do %>
+          <%= if state == :online and lock.status != "processing" do %>
             <.link phx-click="toggle"
-                phx-value-id={lock.id}
-                title={if lock.status == "locked", do: "Unlock", else: "Lock"}>
+              phx-value-id={lock.id}
+              title={if lock.status == "locked", do: "Unlock", else: "Lock"}>
             <.icon name={
               if lock.status == "locked",
               do: "hero-lock-closed",
@@ -75,7 +75,7 @@ defmodule SmartlockWeb.LockLive.Index do
             } />
             </.link>
           <% else %>
-            <span class="opacity-40 cursor-not-allowed" title="Device not reachable">
+            <span class="opacity-40 cursor-not-allowed">
             <.icon name={
               if lock.status == "locked",
               do: "hero-lock-closed",
