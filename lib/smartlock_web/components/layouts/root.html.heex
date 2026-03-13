@@ -36,7 +36,9 @@
     <header class="bg-white shadow-sm px-6 py-3 flex items-center justify-between">
       <!-- Left: App name -->
       <div class="text-xl font-bold text-gray-800">
-        SmartLease Manager
+        <.link navigate={~p"/"} class="text-xl font-bold text-gray-800">
+          SmartLock Manager
+        </.link>
       </div>
 
       <!-- Right: User / notifications -->
@@ -44,13 +46,64 @@
         <!-- Notifications -->
         <button class="relative p-2 rounded hover:bg-gray-100">
           <.icon name="hero-bell" class="w-5 h-5 text-gray-600"/>
-          <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          <span class="absolute -top-0.2 -right-0.1 w-2 h-2 bg-red-500
+          rounded-full"></span>
         </button>
 
         <!-- User -->
-        <div class="flex items-center gap-2">
-          <span class="text-gray-700 font-medium">Brendan Lentz</span>
-          <.icon name="hero-user-circle" class="w-6 h-6 text-gray-500"/>
+        <div class="relative">
+          <!-- User button -->
+          <button
+            phx-click={JS.toggle(to: "#user-menu-dropdown", in: "transition ease-out duration-150 transform opacity-0 scale-95", out: "transition ease-in duration-100 transform opacity-100 scale-100")}
+            class="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 focus:outline-none"
+          >
+            <span class="text-gray-700 font-medium">Brendan Lentz</span>
+            <.icon name="hero-user-circle" class="w-6 h-6 text-gray-500"/>
+          </button>
+
+          <!-- Dropdown menu -->
+          <div
+            id="user-menu-dropdown"
+            class="hidden absolute right-0 mt-2 w-56 bg-white border rounded shadow-lg z-50 origin-top-right"
+            phx-click-away={JS.hide(to: "#user-menu-dropdown")}
+            phx-window-keydown={JS.hide(to: "#user-menu-dropdown")}
+            phx-key="escape"
+            phx-update="ignore"
+          >
+            <!-- External links -->
+            <.link navigate="https://github.com/blentz100" target="_blank"
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+              <.icon name="hero-mark-github" class="w-5 h-5 text-gray-400"/>
+              GitHub
+            </.link>
+
+            <.link navigate="https://linkedin.com/in/brendanlentz" target="_blank"
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+              <.icon name="hero-linkedin" class="w-5 h-5 text-gray-400"/>
+              LinkedIn
+            </.link>
+
+            <.link navigate="https://brendanlentz.com" target="_blank"
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
+              <.icon name="hero-globe-alt" class="w-5 h-5 text-gray-400"/>
+              Personal Website
+            </.link>
+
+            <hr class="my-1 border-gray-200"/>
+
+            <!-- Fun demo actions -->
+            <.link phx-click="random_lock_action"
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
+              <.icon name="hero-shuffle" class="w-5 h-5 text-gray-400"/>
+              Random Lock Action
+            </.link>
+
+            <.link phx-click="reset_demo"
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
+              <.icon name="hero-refresh" class="w-5 h-5 text-gray-400"/>
+              Reset Demo
+            </.link>
+          </div>
         </div>
       </div>
     </header>
