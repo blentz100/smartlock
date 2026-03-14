@@ -46,7 +46,7 @@
           </.link>
         </div>
 
-        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">
+        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded tracking-wide">
           Demo Environment
         </span>
       </div>
@@ -102,15 +102,11 @@
             <hr class="my-1 border-gray-200"/>
 
             <!-- Fun demo actions -->
-            <.link phx-click="random_lock_action"
-              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-              <i class="fa-solid fa-shuffle text-gray-500"></i>
-              Random Lock Action
-            </.link>
-
-            <.link phx-click="reset_demo"
-              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-              <i class="fa-solid fa-dice text-gray-500"></i>
+            <.link
+              phx-click={JS.hide(to: "#user-menu-dropdown") |> JS.push("reset_demo")}
+              class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer"
+            >
+              <i class="fa-solid fa-rotate text-gray-400"></i>
               Reset Demo
             </.link>
           </div>

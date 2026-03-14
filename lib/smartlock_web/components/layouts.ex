@@ -41,7 +41,14 @@ defmodule SmartlockWeb.Layouts do
       </div>
     </main>
 
-    <.flash_group flash={@flash} />
+    <div
+      id="flash-container"
+      phx-hook="AutoDismissFlash"
+      data-timeout="5000"
+      class="fixed top-4 right-12 z-50 flex flex-col items-end space-y-2"
+      >
+      <.flash_group flash={@flash} id="flash-group" />
+    </div>
     """
   end
 

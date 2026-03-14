@@ -25,6 +25,13 @@ import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
 let Hooks = {}
+Hooks.AutoDismissFlash = {
+  mounted() {
+    let timeout = this.el.dataset.timeout || 5000
+    setTimeout(() => this.el.remove(), timeout)
+  }
+}
+export default Hooks
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {

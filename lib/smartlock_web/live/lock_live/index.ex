@@ -174,6 +174,11 @@ defmodule SmartlockWeb.LockLive.Index do
   def handle_event("reset_demo", _params, socket) do
     Smartlock.Locks.reset_demo()
 
+    socket =
+      socket
+      |> clear_flash(:info)
+      |> put_flash(:info, "Demo environment reset")
+
     {:noreply, load_locks(socket)}
   end
 
