@@ -171,6 +171,12 @@ defmodule SmartlockWeb.LockLive.Index do
     end
   end
 
+  def handle_event("reset_demo", _params, socket) do
+    Smartlock.Locks.reset_demo()
+
+    {:noreply, load_locks(socket)}
+  end
+
   def handle_event("prev_page", _, socket) do
     socket =
       update(socket, :page, fn page ->

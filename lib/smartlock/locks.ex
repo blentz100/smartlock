@@ -7,7 +7,6 @@ defmodule Smartlock.Locks do
 
   import Ecto.Query, warn: false
   alias Smartlock.Repo
-
   alias Smartlock.Locks.Lock
 
   @doc """
@@ -131,6 +130,22 @@ defmodule Smartlock.Locks do
 
   def count_locks do
     Lock |> Repo.aggregate(:count, :id)
+  end
+
+  def reset_demo do
+    now = DateTime.utc_now()
+
+    from(l in Lock,
+      update: [
+        set: [
+          status: "locked",
+          battery_level: fragment("floor(random() * 30 + 70)"),
+          last_seen_at: ^now,
+          last_command_at: nil
+        ]
+      ]
+    )
+    |> Repo.update_all([])
   end
 end
 
