@@ -8,6 +8,10 @@
       {assigns[:page_title]}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
     </script>
     <script>
@@ -73,19 +77,19 @@
             <!-- External links -->
             <.link navigate="https://github.com/blentz100" target="_blank"
               class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-              <.icon name="hero-mark-github" class="w-5 h-5 text-gray-400"/>
-              GitHub
+              <i class="fa-brands fa-github text-gray-500"></i>
+                GitHub
             </.link>
 
             <.link navigate="https://linkedin.com/in/brendanlentz" target="_blank"
               class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-              <.icon name="hero-linkedin" class="w-5 h-5 text-gray-400"/>
+              <i class="fa-brands fa-linkedin text-gray-500"></i>
               LinkedIn
             </.link>
 
             <.link navigate="https://brendanlentz.com" target="_blank"
               class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100">
-              <.icon name="hero-globe-alt" class="w-5 h-5 text-gray-400"/>
+               <i class="fa-solid fa-globe text-gray-500"></i>
               Personal Website
             </.link>
 
@@ -94,13 +98,13 @@
             <!-- Fun demo actions -->
             <.link phx-click="random_lock_action"
               class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-              <.icon name="hero-shuffle" class="w-5 h-5 text-gray-400"/>
+              <i class="fa-solid fa-shuffle text-gray-500"></i>
               Random Lock Action
             </.link>
 
             <.link phx-click="reset_demo"
               class="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-              <.icon name="hero-refresh" class="w-5 h-5 text-gray-400"/>
+              <i class="fa-solid fa-dice text-gray-500"></i>
               Reset Demo
             </.link>
           </div>
