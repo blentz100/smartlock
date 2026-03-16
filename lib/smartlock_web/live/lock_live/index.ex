@@ -81,15 +81,6 @@ defmodule SmartlockWeb.LockLive.Index do
             } />
             </span>
           <% end %>
-
-          <.link
-            navigate={~p"/locks/#{lock}/edit"}
-            title="Edit"
-            class="text-gray-600 hover:text-blue-600"
-          >
-            <.icon name="hero-pencil-square" />
-          </.link>
-
           <.link
             phx-click={JS.push("delete", value: %{id: lock.id}) |> hide("##{lock.id}")}
             data-confirm="Are you sure?"
