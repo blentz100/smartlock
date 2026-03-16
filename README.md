@@ -5,7 +5,7 @@ simulations, and an interactive dashboard. This app is designed to demonstrate E
 real-time streaming concepts in a concise and visually engaging way.
 
 In the gif below, note that there are two tabs open, but pointing to the same URL. The purpose is to show the real-time
-streaming updates between separate instances of the application.
+streaming updates across separate instances of the application.
 
 ![Smartlock Demo](assets/demo.gif)
 
