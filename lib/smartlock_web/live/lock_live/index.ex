@@ -8,7 +8,7 @@ defmodule SmartlockWeb.LockLive.Index do
     ~H"""
     <Layouts.app flash={@flash}>
       <.header>
-        Access
+        Locks
       </.header>
 
       <.table

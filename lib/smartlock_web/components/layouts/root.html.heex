@@ -41,7 +41,8 @@
       <!-- Left: App name -->
       <div class="flex items-center gap-3">
         <div class="text-xl font-bold text-gray-800">
-           <.link navigate={~p"/"} class="text-xl font-bold text-gray-800">
+           <.link navigate={~p"/"} class="text-xl font-bold text-gray-800"
+           style="color: rgb(50, 189, 205)">
                     SmartLock Manager
           </.link>
         </div>
@@ -114,7 +115,7 @@
 
 
   <div class="flex flex-1 h-[calc(100vh-64px)]">
-    <aside class="w-45 bg-white border-r flex flex-col">
+    <aside class="w-45 bg-gray-50 border-r border-gray-200 flex flex-col">
 
       <div class="flex-1 overflow-y-auto px-4 py-4 text-sm">
 
@@ -160,12 +161,12 @@
               navigate={~p"/"}
               class={[
                 "flex items-center gap-2",
-                current_path == "/" && "text-blue-600 font-medium",
+                current_path == "/" && "text-gray-600 font-medium",
                 current_path != "/" && "text-gray-400"
               ]}
             >
               <.icon name="hero-lock-closed" class="w-4 h-4"/>
-              Access
+              Locks
             </.link>
           </li>
 
@@ -235,7 +236,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto p-8">
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
       <%= @inner_content %>
     </main>
 
