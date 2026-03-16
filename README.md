@@ -4,7 +4,7 @@
 simulations, and an interactive dashboard. This app is designed to demonstrate Elixir, Phoenix LiveView, and 
 real-time streaming concepts in a concise and visually engaging way.
 
-![Smartlock Demo](assets/demo/demo.gif)
+![Smartlock Demo](assets/demo.gif)
 
 ---
 
