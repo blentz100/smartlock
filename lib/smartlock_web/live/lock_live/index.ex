@@ -33,7 +33,8 @@ defmodule SmartlockWeb.LockLive.Index do
         <:col :let={{_id, lock}} label="Connection" class="w-1/6">
           <% state = connection_state(lock) %>
           <span class={[
-          "px-2 py-1 rounded-full text-xs font-semibold transition-colors duration-700",
+          "px-2 py-1 rounded-full text-xs font-semibold transition-colors
+            duration-700 min-width-200px",
           state == :online && "bg-green-100 text-green-700",
           state == :stale && "bg-yellow-100 text-yellow-700",
           state == :offline && "bg-gray-100 text-gray-600"
@@ -48,15 +49,19 @@ defmodule SmartlockWeb.LockLive.Index do
         <:col :let={{_id, lock}} label="Last Heartbeat" class="w-1/8">
           <%= relative_time(lock.last_seen_at) %>
         </:col>
-      <:col :let={{_id, lock}} label="Status" class="w-1/8">
+      <:col :let={{_id, lock}} label="Status">
+        <div class="flex justify-center">
         <span class={[
-        "inline-flex w-full justify-center px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap",
-        lock.status == "locked" && "bg-red-100 text-red-700",
-        lock.status == "unlocked" && "bg-green-100 text-green-700",
-        lock.status == "processing" && "bg-yellow-100 text-yellow-700"
+          "inline-block px-2 py-1 rounded-full text-xs font-semibold text-center",
+          "w-20",
+          "whitespace-nowrap",
+          lock.status == "locked" && "bg-red-100 text-red-700",
+          lock.status == "unlocked" && "bg-green-100 text-green-700",
+          lock.status == "processing" && "bg-yellow-100 text-yellow-700"
         ]}>
-        <%= String.capitalize(lock.status) %>
+          <%= String.capitalize(lock.status) %>
         </span>
+        </div>
       </:col>
       <:col :let={{_id, lock}} label="Action" class="w-1/6">
          <div class="flex gap-2 justify-start whitespace-nowrap">
