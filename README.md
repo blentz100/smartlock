@@ -4,11 +4,14 @@
 simulations, and an interactive dashboard. This app is designed to demonstrate Elixir, Phoenix LiveView, and 
 real-time streaming concepts in a concise and visually engaging way.
 
+In the gif below, note that there are two tabs open, but pointing to the same URL. The purpose is to show the real-time
+streaming updates between separate instances of the application.
+
 ![Smartlock Demo](assets/demo.gif)
 
 ---
 
-## Demo Purpose
+## Purpose
 
 This application simulates a fleet of smart locks with features including:
 
