@@ -14,7 +14,7 @@ defmodule SmartlockWeb.LockLive.Index do
       <.table
         id="locks"
         rows={@streams.locks}
-        class="table-fixed"
+        class="table-fixed w-full"
       >
         <:col :let={{_id, lock}} label="Name" class="w-1/3">
           <.link navigate={~p"/locks/#{lock}"} class="hover:underline">
@@ -45,20 +45,18 @@ defmodule SmartlockWeb.LockLive.Index do
           end %>
           </span>
         </:col>
-        <:col :let={{_id, lock}} label="Last Heartbeat" class="w-1/6">
+        <:col :let={{_id, lock}} label="Last Heartbeat" class="w-1/8">
           <%= relative_time(lock.last_seen_at) %>
         </:col>
       <:col :let={{_id, lock}} label="Status" class="w-1/8">
-          <div class="flex justify-start">
-          <span class={[
-            "inline-flex justify-center px-2 py-1 rounded-full text-xs font-semibold",
-            lock.status == "locked" && "bg-red-100 text-red-700",
-            lock.status == "unlocked" && "bg-green-100 text-green-700",
-            lock.status == "processing" && "bg-yellow-100 text-yellow-700"
-          ]}>
-            <%= String.capitalize(lock.status) %>
-          </span>
-          </div>
+        <span class={[
+        "inline-flex w-full justify-center px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap",
+        lock.status == "locked" && "bg-red-100 text-red-700",
+        lock.status == "unlocked" && "bg-green-100 text-green-700",
+        lock.status == "processing" && "bg-yellow-100 text-yellow-700"
+        ]}>
+        <%= String.capitalize(lock.status) %>
+        </span>
       </:col>
       <:col :let={{_id, lock}} label="Action" class="w-1/6">
          <div class="flex gap-2 justify-start whitespace-nowrap">
