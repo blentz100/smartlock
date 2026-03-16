@@ -4,6 +4,13 @@
 simulations, and an interactive dashboard. This app is designed to demonstrate Elixir, Phoenix LiveView, and 
 real-time streaming concepts in a concise and visually engaging way.
 
+When I initially started researching Elixir, I couldn't find too many real world applications 
+that didn't require logins to see some basic functionality. If you are
+looking for a basic working example of Elixir with Phoenix LiveView, this is a good option. If you have other good 
+options to share please open an issue the repo and share a link. 
+
+---
+
 In the gif below, note that there are two tabs open, but pointing to the same URL. The purpose is to show the real-time
 streaming updates across separate instances of the application.
 
@@ -26,6 +33,7 @@ This application simulates a fleet of smart locks with features including:
 ## Live Demo
 
 A live version is hosted on Fly.io: [https://smartlock.fly.dev](https://smartlock.fly.dev)
+
 
 ---
 
