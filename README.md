@@ -34,8 +34,36 @@ This application simulates a fleet of smart locks with features including:
 
 A live version is hosted on Fly.io: [https://smartlock.fly.dev](https://smartlock.fly.dev)
 
-
 ---
+
+## Project Structure
+
+```
+smartlock/
+├── assets/                  # Frontend: CSS, JS, demo media
+├── config/                  # Environment configs: dev, prod, test
+├── lib/
+│   ├── smartlock/           # Core logic
+│   │   ├── locks.ex         # Lock operations and business logic
+│   │   ├── locks/lock.ex    # Lock schema
+│   │   └── iot/lock_simulator.ex  # Simulated IoT behavior
+│   └── smartlock_web/       # Web interface
+│       ├── live/lock_live/  # LiveView dashboard
+│       ├── components/      # Reusable UI components
+│       └── router.ex        # Routes
+├── priv/
+│   ├── repo/migrations/     # DB migrations
+│   └── static/favicon.png   # App favicon
+├── test/                    # Tests: domain & LiveView
+├── mix.exs                  # Elixir project
+└── README.md                # Project overview & demo instructions
+```
+
+**Notes:**
+- `locks.ex` handles lock toggling, deletion, and heartbeat updates.
+- `lock_simulator.ex` runs the background IoT simulation.
+- `lock_live/` drives the real-time dashboard using LiveView and PubSub.
+- `components/` provides reusable UI elements like tables, headers, and flash messages.
 
 ## Features Demonstrated
 
