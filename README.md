@@ -22,8 +22,7 @@ This application simulates a fleet of smart locks with features including:
 
 ## Live Demo
 
-A live version is hosted on Fly.io:  
-[https://smartlock.fly.dev](https://smartlock.fly.dev)
+A live version is hosted on Fly.io: [https://smartlock.fly.dev](https://smartlock.fly.dev)
 
 ---
 
