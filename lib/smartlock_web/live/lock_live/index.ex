@@ -174,10 +174,13 @@ defmodule SmartlockWeb.LockLive.Index do
   def handle_event("reset_demo", _params, socket) do
     Smartlock.Locks.reset_demo()
 
+    SmartlockWeb.Endpoint.broadcast("locks", "demo_reset", %{})
+
     socket =
       socket
       |> clear_flash(:info)
       |> put_flash(:info, "Demo environment reset")
+      |> load_locks()
 
     {:noreply, load_locks(socket)}
   end
@@ -197,6 +200,7 @@ defmodule SmartlockWeb.LockLive.Index do
     lock = Locks.get_lock!(id)
     {:ok, _} = Locks.delete_lock(lock)
 
+    SmartlockWeb.Endpoint.broadcast("locks", "lock_deleted", lock)
     {:noreply, stream_delete(socket, :locks, lock)}
   end
   def handle_event("toggle", %{"id" => id}, socket) do
@@ -217,6 +221,9 @@ defmodule SmartlockWeb.LockLive.Index do
         last_seen_at: DateTime.utc_now()
       })
 
+    # Broadcast the update
+    SmartlockWeb.Endpoint.broadcast("locks", "lock_updated", updated_lock)
+
     delay = Enum.random(300..1500)
 
     Process.send_after(
@@ -228,23 +235,46 @@ defmodule SmartlockWeb.LockLive.Index do
     {:noreply, stream_insert(socket, :locks, updated_lock)}
   end
 
-  def handle_info({:complete_toggle, id, target_status}, socket) do
-    lock = Locks.get_lock!(id)
-
-    {:ok, updated_lock} =
-      Locks.update_lock(lock, %{status: target_status})
-
-    {:noreply, stream_insert(socket, :locks, updated_lock)}
+  @impl true
+  def handle_info(
+        %Phoenix.Socket.Broadcast{topic: "locks", event: "demo_reset"},
+        socket
+      ) do
+    {:noreply, load_locks(socket)}
   end
 
   @impl true
-  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks", event: "updated", payload: lock}, socket) do
+  def handle_info({:complete_toggle, id, target_status}, socket) do
+    lock = Locks.get_lock!(id)
+
+    {:ok, lock} =
+      Locks.update_lock(lock, %{
+        status: target_status,
+        last_seen_at: DateTime.utc_now()
+      })
+
+    SmartlockWeb.Endpoint.broadcast("locks", "lock_updated", lock)
+
+    {:noreply, stream_insert(socket, :locks, lock)}
+  end
+
+  @impl true
+  def handle_info(%Phoenix.Socket.Broadcast{topic: "locks", event:
+    "lock_updated", payload: lock}, socket) do
     # Only update locks on the current page
     if lock.id in socket.assigns.visible_lock_ids do
       {:noreply, stream_insert(socket, :locks, lock)}
     else
       {:noreply, socket}
     end
+  end
+
+  @impl true
+  def handle_info(
+        %Phoenix.Socket.Broadcast{topic: "locks", event: "lock_deleted", payload: lock},
+        socket
+      ) do
+    {:noreply, stream_delete(socket, :locks, lock)}
   end
 
   defp connection_state(lock) do

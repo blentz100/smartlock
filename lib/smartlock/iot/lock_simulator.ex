@@ -58,7 +58,7 @@ defmodule Smartlock.IoT.LockSimulator do
         last_seen_at: timestamp
       })
 
-    Endpoint.broadcast("locks", "updated", updated)
+    Endpoint.broadcast("locks", "lock_updated", updated)
   end
 
   defp maybe_toggle(lock) do
@@ -78,7 +78,7 @@ defmodule Smartlock.IoT.LockSimulator do
       {:ok, updated} =
         Locks.update_lock(lock, %{status: new_status})
 
-      Endpoint.broadcast("locks", "updated", updated)
+      Endpoint.broadcast("locks", "lock_updated", updated)
     end
   end
 end
