@@ -18,6 +18,10 @@ streaming updates across separate instances of the application.
 
 ---
 
+## Architecture
+
+![SmartLock Architecture](assets/smart-lock-diagram.svg)
+
 ## Purpose
 
 This application simulates a fleet of smart locks with features including:
