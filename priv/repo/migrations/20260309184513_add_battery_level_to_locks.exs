@@ -2,8 +2,9 @@ defmodule Smartlock.Repo.Migrations.AddBatteryLevelToLocks do
   use Ecto.Migration
 
   def change do
-    alter table(:locks) do
-      add :battery_level, :integer
-    end
+    execute("""
+    ALTER TABLE internal.locks
+    ADD COLUMN IF NOT EXISTS battery_level integer;
+    """)
   end
 end
