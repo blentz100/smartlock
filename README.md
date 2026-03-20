@@ -91,6 +91,7 @@ smartlock/
 - Erlang/OTP ~> 26
 - PostgreSQL
 - Node.js & Tailwind CSS (for assets)
+- Docker Desktop
 
 ### Setup
 
