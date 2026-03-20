@@ -107,17 +107,27 @@ mix deps.get
 cd assets && npm install && cd ..
 ```
 
-3. Database setup:
+3. Start a local PostgreSQL database (via Docker):
+```
+docker run --name smartlock-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=smartlock_dev \
+  -p 5432:5432 \
+  -d postgres:15
+```
+
+4. Database setup:
 ```
 mix ecto.setup
 ```
 
-4. Start the dev server:
+5. Start the dev server:
 ```
 mix phx.server
 ```
 
-5. Open your browser at `http://localhost:4000`
+6. Open your browser at `http://localhost:4000`
 
 ## Architecture Highlights
 - Lock Simulator: GenServer that periodically simulates lock heartbeats and random state changes.
