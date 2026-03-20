@@ -27,7 +27,7 @@ defmodule SmartlockWeb.LockLive.Index do
             name={battery_icon(lock.battery_level)}
             class={battery_color(lock.battery_level)}
           />
-          <span class="text-gray-700"><%= lock.battery_level %>%</span>
+          <span><%= lock.battery_level %>%</span>
           </div>
         </:col>
         <:col :let={{_id, lock}} label="Connection" class="w-1/6">
