@@ -55,6 +55,14 @@
 
       <!-- Right: User / notifications -->
       <div class="flex items-center gap-4">
+        <!-- Theme Toggle Button -->
+        <button
+          id="theme-toggle"
+          phx-hook="ThemeToggle"
+          class="p-2 rounded hover:bg-base-200 focus:outline-none transition-colors duration-150"
+        >
+          <.icon name="hero-sun" class="w-6 h-6 text-base-content"/>
+        </button>
         <!-- Notifications -->
         <button class="relative p-2 rounded">
           <.icon name="hero-bell" class="w-5 h-5 text-gray-600"/>
