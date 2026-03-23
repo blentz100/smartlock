@@ -166,17 +166,19 @@ defmodule SmartlockWeb.LockLive.Index do
   end
 
   def handle_event("reset_demo", _params, socket) do
+    # Reset the underlying demo data in the database.
     Smartlock.Locks.reset_demo()
 
+    # Notify all subscribed LiveViews to refresh themselves
     SmartlockWeb.Endpoint.broadcast("locks", "demo_reset", %{})
 
     socket =
       socket
+      # Replace any existing info flash with a fresh reset message
       |> clear_flash(:info)
       |> put_flash(:info, "Demo environment reset")
-      |> load_locks()
 
-    {:noreply, load_locks(socket)}
+    {:noreply, socket}
   end
 
   def handle_event("prev_page", _, socket) do
